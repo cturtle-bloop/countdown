@@ -1,0 +1,366 @@
+:root {
+    --bg: #ffffff;
+    --fg: #111111;
+    --muted: #6b7280;
+    --box: #fafafa;
+    --border: #e5e7eb;
+    --btn-bg: #f6f6f6;
+    --btn-border: #d1d5db;
+    --accent: #64db2d;
+    /* green for pulse */
+    --progress: #94a3b8;
+    /* slate */
+    --tick: #9ca3af;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #0f1115;
+        --fg: #e5e7eb;
+        --muted: #9aa0aa;
+        --box: #151922;
+        --border: #242a36;
+        --btn-bg: #1b2330;
+        --btn-border: #2a3344;
+        --progress: #475569;
+        --tick: #64748b;
+    }
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.panel-root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 12px;
+    gap: 12px;
+    box-sizing: border-box;
+}
+
+/* Header */
+.header {
+    justify-content: right;
+}
+
+.icon-btn {
+    all: unset;
+    cursor: pointer;
+    border: 1px solid var(--btn-border);
+    background: var(--btn-bg);
+    padding: 6px;
+    border-radius: 10px;
+}
+
+.icon-btn svg {
+    fill: currentColor;
+}
+
+/* Boxes */
+.box {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--box);
+    padding: 12px;
+}
+
+/* Rows and helpers */
+.row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.input-row {
+    align-items: baseline;
+    gap: .5rem;
+}
+
+.last {
+    justify-content: right;
+}
+
+.muted {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.spacer {
+    margin-left: auto;
+}
+
+.clock {
+    font: 700 32px/1.2 D-DIN;
+}
+
+.utc {
+    opacity: 0.1;
+}
+
+/* Clocks at bottom */
+.clocks {
+    margin-top: auto;
+}
+
+.clocks-row {
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+}
+
+.clocks-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+}
+
+/* Buttons */
+.btn {
+    color: var(--fg);
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--btn-border);
+    background: var(--btn-bg);
+    cursor: pointer;
+}
+
+.btn:disabled {
+    opacity: .1;
+    cursor: default;
+}
+
+/* Google-style input visualization */
+.time-input .d {
+    opacity: .35;
+    font-weight: 700;
+}
+
+.time-input .d.filled {
+    opacity: 1;
+}
+
+.time-input .sep {
+    opacity: .5;
+    margin: 0 .15rem;
+    cursor: default;
+}
+
+.time-input {
+    position: relative;
+}
+
+.time-input .caret {
+    display: inline-block;
+    width: 1.5px;
+    /* tweak if you want thicker */
+    height: 0.9em;
+    background: currentColor;
+    margin-left: 1px;
+    animation: caretBlink 1s steps(1, end) infinite;
+    vertical-align: -0.1em;
+    /* minor optical alignment */
+}
+
+@keyframes caretBlink {
+    50% {
+        opacity: 0;
+    }
+}
+
+.visually-hidden {
+    position: absolute !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    width: 1px;
+    height: 1px;
+}
+
+.remaining {
+    position: relative;
+}
+
+.remaining-row {
+    align-items: baseline;
+    margin-top: .25rem;
+}
+
+/* Flash on finish */
+#timer.flash {
+    animation: flashBlink 1000ms ease-in-out 10;
+}
+
+@keyframes flashBlink {
+    0% {
+        border: 1px solid rgba(136, 224, 43, 0.1);
+        background: rgba(136, 224, 43, 0.07);
+        /* background: transparent; */
+    }
+
+    8% {
+        border: 1px solid rgba(136, 224, 43, 0.9);
+        background: rgba(136, 224, 43, 0.5);
+    }
+
+    100% {
+        border: 1px solid rgba(136, 224, 43, 0.1);
+        background: rgba(136, 224, 43, 0.07);
+        /* background: transparent; */
+    }
+}
+
+/* Progress bar (reverse: starts full, shrinks to the right) */
+.progress-wrap {
+    position: relative;
+    height: 4px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: transparent;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progress-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(to right, var(--progress), var(--progress));
+    transition: width 0.2s linear;
+}
+
+.progress-ticks {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.progress-tick {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--tick);
+    opacity: .8;
+}
+
+/* === Settings box that joins the gear + content === */
+.settings-box {
+    /* collapsed by default */
+    /* transition: grid-template-rows .5s ease, border-color .5s ease, background-color .5s ease; */
+    border-radius: 12px;
+    /* collapsed: no border so only the gear button is visible with its own border */
+    border: 1px solid transparent;
+    background: transparent;
+}
+
+/* header row: holds the gear; keeps the button's original size/shape */
+.settings-head {
+    /* display: flex;
+    justify-content: flex-end;
+    align-items: center; new new */
+    /* gear on the right */
+    text-align: right;
+    padding: 0;
+    /* no extra padding when collapsed */
+}
+
+/* keep your existing icon button look */
+.icon-btn.gear-alone {
+    display: inline-block;           /* not flex; avoids centering artifacts */
+    vertical-align: middle;
+    cursor: pointer;
+    padding: 6px;                    /* constant */
+    border: 1px solid var(--btn-border);
+    border-radius: 10px;
+    background: var(--btn-bg);
+}
+
+.icon-btn.gear-alone svg {
+    fill: currentColor;
+}
+
+/* collapsible body: this is the area that expands downward */
+.settings-body {
+    overflow: hidden;
+    /* hide while collapsing */
+    max-height: 0px;
+}
+
+/* Inner body gets the vertical spacing; not the grid track */
+.settings-body-inner {
+    padding: 6px 12px 10px 12px;                   /* constant in both states */
+}
+
+/* Expanded state: border grows to full width, body row opens */
+.settings-box:not(.collapsed) {
+    grid-template-rows: auto 1fr;
+    /* open the second row */
+    border-width: 1px;
+    /* show container border */
+    background: var(--box);
+    /* match your boxes */
+    border-color: var(--border);                   /* same width as collapsed (no size change) */
+}
+
+/* when expanded, visually merge the gear with the top edge of the box */
+.settings-box:not(.collapsed) .settings-head {
+    /* give the head the same horizontal padding as the body so the border feels continuous */
+    padding: 0px;
+}
+
+/* remove the button's own border when expanded so the container border reads as one piece */
+.settings-box:not(.collapsed) .icon-btn.gear-alone {
+    border-color: transparent;
+    background: transparent;
+    padding: 6px;
+    /* preserve intrinsic button size */
+}
+
+/* add padding for the body only when expanded so the content pushes layout down */
+.settings-box:not(.collapsed) .settings-body {
+    min-height: fit-content;
+    padding-top: 6px;
+    padding-bottom: 10px;
+}
+
+.settings>* {
+    min-height: 0;
+}
+
+.settings-row {
+    display: flex;
+    gap: 16px;
+    padding: 0px 0;
+}
+
+.settings-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.settings-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+
+.radio,
+.check {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.controls {
+    margin-top: .5rem;
+}
