@@ -4,7 +4,21 @@
     "version": "0.0.2",
     "description": "Side-panel hold timer with Google-style digit input.",
     "permissions": ["sidePanel", "storage"],
-    "action": { "default_title": "Open side panel" },
+    "icons": {
+      "16": "icons/stopwatch-light-16.png",
+      "32": "icons/stopwatch-light-32.png",
+      "48": "icons/stopwatch-light-64.png",
+      "128": "icons/stopwatch-light-128.png"
+    },
+    "action": {
+      "default_title": "Open side panel",
+      "default_icon": {
+        "16": "icons/stopwatch-light-16.png",
+        "32": "icons/stopwatch-light-32.png",
+        "48": "icons/stopwatch-light-64.png",
+        "128": "icons/stopwatch-light-128.png"
+      }
+    },
     "background": { "service_worker": "sw.js" },
     "side_panel": { "default_path": "panel.html" }
   }

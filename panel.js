@@ -365,4 +365,14 @@ function renderAll() {
     updateProgress(tot);
 }
 
-  // (Done)
+(function setupIconThemeSync() {
+  const mq = window.matchMedia("(prefers-color-scheme: dark)");
+  const apply = () =>
+    chrome.runtime.sendMessage({
+      type: "setIconTheme",
+      theme: mq.matches ? "dark" : "light"
+    });
+
+  apply();
+  mq.addEventListener("change", apply);
+})();
